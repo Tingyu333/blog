@@ -41,9 +41,13 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {           
-        if($request->name == null || $request->title == null || $request->content == null) {
+        if($request->title == null) {
             return back()->with([
-                'flash_message' => '新增失敗'
+                'flash_message' => '標題不能為空'
+            ]);
+        } elseif ($request->content == null) {
+            return back()->with([
+                'flash_message' => '內文不能為空'
             ]);
         }
         $this->articleService->store($request);
@@ -58,9 +62,13 @@ class ArticleController extends Controller
 
     public function update(Request $request, $id)
     {
-        if($request->name == null || $request->title == null || $request->content == null) {
+        if($request->title == null) {
             return back()->with([
-                'flash_message' => '新增失敗'
+                'flash_message' => '標題不能為空'
+            ]);
+        } elseif ($request->content == null) {
+            return back()->with([
+                'flash_message' => '內文不能為空'
             ]);
         }      
         $this->articleService->update($request, $id);
