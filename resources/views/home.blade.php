@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="title" align='center' valign="middle">Home<br>
+    <div class="title" align='center' valign="middle">Home123<br>
     	<a href="/create">
             <button>Add</button><br><br>
         </a> 
