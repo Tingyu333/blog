@@ -4,87 +4,115 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Article;
 use App\Service\ArticleService;
+use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends Controller
 {
-
     protected $articleService;
 
     public function __construct(ArticleService $articleService)
     {
         $this->articleService = $articleService;
     }
-
-    public function welcome()
+    //文章瀏覽
+    public function read($id)
     {
-        return view('welcome');
+        $data = $this->articleService->getArticle($id);
+        if ($data == null) {
+            return response()->json([
+                'success' => false,
+                'message' => '找不到文章',
+                'data' => '',
+            ], 200);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'get article',
+            'data' => $data,
+        ], 200);
     }
-
-    public function article($id)
-    {
-        $data = $this->articleService->article($id);
-        return view('/article', compact('data'));
-    }
-
+    //僅能看到登入者自己的文章
     public function user()
     {
-        $data = $this->articleService->user();
-        return view('/user', compact('data'));
+        $data = $this->articleService->getUserArticle();
+        return response()->json([
+            'success' => true,
+            'message' => 'get user',
+            'data' => $data,
+        ], 200);
     }
-
-    public function create()
-    {
-        return view('/create'); 
-    }
-
+    //新增文章功能
     public function store(Request $request)
     {           
-        if($request->title == null) {
-            return back()->with([
-                'flash_message' => '標題不能為空'
-            ]);
-        } elseif ($request->content == null) {
-            return back()->with([
-                'flash_message' => '內文不能為空'
-            ]);
+        $validator = Validator::make($request->all(), [
+            'title' =>'required|max:25|regex:/(^[a-zA-Z0-9 ]*$)/',
+            'content' => 'required|regex:/(^[,.&a-zA-Z0-9]*$)/',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+                'data' => '',
+            ], 422);
         }
-        $this->articleService->store($request);
-        return redirect('/user');
+        $data = $this->articleService->createArticle($request);
+        return response()->json([
+            'success' => true,
+            'message' => '新增成功',
+            'data' => '',
+        ], 200); 
     }
-
+    //編輯文章頁面顯示(取得該篇文章)
     public function edit($id)
     {
-        $data = $this->articleService->article($id);
-        return view('/edit', compact('data'));         
+        $data = $this->articleService->getArticle($id);
+        return response()->json([
+            'success' => true,
+            'message' => 'article edit',
+            'data' => $data,
+        ], 200);         
     }
-
+    //更新文章功能
     public function update(Request $request, $id)
     {
-        if($request->title == null) {
-            return back()->with([
-                'flash_message' => '標題不能為空'
-            ]);
-        } elseif ($request->content == null) {
-            return back()->with([
-                'flash_message' => '內文不能為空'
-            ]);
-        }      
-        $this->articleService->update($request, $id);
-        return redirect('/user');
+        $validator = Validator::make($request->all(), [
+            'title' =>'required|max:25|regex:/(^[a-zA-Z0-9 ]*$)/',
+            'content' => 'required|regex:/(^[,.&a-zA-Z0-9]*$)/',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+                'data' => '',
+            ], 422);
+        }
+        if ($this->articleService->updateArticle($request, $id) == 'true') {  
+            return response()->json([
+                'success' => true,
+                'message' => '更新成功',
+                'data' => '',
+            ], 200); 
+        } 
     }
-
-    public function delete(Request $request, $id)
+    //刪除文章
+    public function delete($id)
     {
-        $this->articleService->delete($request, $id);
-        return redirect('/user');
+        $this->articleService->deleteArticle($id);
+        return response()->json([
+            'success' => true,
+            'message' => '刪除成功',
+            'data' => '',
+        ], 200); 
     }
-
-    public function admin()
+    //主頁文章顯示
+    public function index()
     {
-        $data = $this->articleService->admin();
-        return view('/admin', compact('data'));
+        $data = $this->articleService->getAllArticle();
+        return response()->json([
+            'success' => true,
+            'message' => 'get all article',
+            'data' => $data,
+        ], 200);
     }
-
 }
