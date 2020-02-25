@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Auth;
+use JWTAuth;
 use App\Article;
 
 class AuthorityManagement
@@ -17,22 +17,22 @@ class AuthorityManagement
      */
     public function handle($request, Closure $next)
     {
+        //權限判斷
         $articalId = $request->route('id');
         $name = Article::where('id', $articalId)->value('name');
-
-        //dd(Auth::user()->name);
-        
-        if ($name == Auth::user()->name) { 
+        if (JWTAuth::user()->name == $name || JWTAuth::user()->identity == 'admin') {
             return $next($request);
-        } elseif (Auth::user()->identity == 'admin') {
-            return $next($request);
-        } elseif ($articalId == NULL) {
-            return $next($request);
-        }
-       
-       return back()->with([
-                'flash_message' => '你不是該文章的作者!'
-            ]);
-        
+        } elseif ($name == NULL) {
+            return response()->json([
+                'success' => false,
+                'message' => '找不到文章',
+                'data' => '',
+            ], 200);  
+        }   
+        return response()->json([
+            'success' => false,
+            'message' => '不是作者或管理員',
+            'data' => '',
+        ], 403);         
     }
 }

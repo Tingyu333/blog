@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Repository\ArticleRepository;
 
-
 class ArticleService
 {
     protected $articleRepository;
@@ -14,35 +13,34 @@ class ArticleService
         $this->articleRepository = $articleRepository;
     }
 
-
-    public function user()
+    public function getUserArticle()
     {
-        return $this->articleRepository->user();                     
+        return $this->articleRepository->getUserArticle();                     
     }
 
-    public function store($request)
+    public function createArticle($request)
     {        
-        return $this->articleRepository->store($request);
+        return $this->articleRepository->createArticle($request);
     }
 
-    public function update($request, $id)
+    public function updateArticle($request, $id)
     {   
-        return $this->articleRepository->update($request, $id);
+        return $this->articleRepository->updateArticle($request, $id);
     }
 
-    public function delete($request, $id)
+    public function deleteArticle($id)
     {
-        return $this->articleRepository->delete($request, $id);
+        return $this->articleRepository->deleteArticle($id);           
     }
 
-    public function article($id)
+    public function getArticle($id)
     {
-        return $this->articleRepository->article($id);
+        return $this->articleRepository->getArticle($id);
     }
 
-    public function admin()
+    public function getAllArticle()
     {
-        return $this->articleRepository->admin();
+        return $this->articleRepository->getAllArticle();
     }
     
 }

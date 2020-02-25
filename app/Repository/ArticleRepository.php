@@ -2,49 +2,45 @@
 
 namespace App\Repository;
 
-use App\User;
 use App\Article;
-use Auth;
+use JWTAuth;
 
 class ArticleRepository
 {
-    
-    public function user()
+    public function getUserArticle()
     {    	
-        return Article::where('name', '=', Auth::user()->name)->get();             
+        return Article::where('name', '=', JWTAuth::user()->name)->get();             
     }
 
-    public function store($request)
+    public function createArticle($request)
     {           
         return Article::create([
-            'name' => $request->name,
+            'name' => JWTAuth::user()->name,
             'title' => $request->title,
             'content' => $request->content,
         ]);
     }
 
-    public function update($request, $id)
+    public function updateArticle($request, $id)
     {           
         return Article::find($id)->update([
-            'name' => $request->name,
             'title' => $request->title,
             'content' => $request->content,
         ]); 
     }
 
-    public function delete($request, $id)
+    public function deleteArticle($id)
     {      
         return Article::find($id)->delete();
     }
 
-    public function article($id)
+    public function getArticle($id)
     {
         return Article::find($id);
     }
 
-    public function admin()
+    public function getAllArticle()
     {
-        return User::where('identity', '=', NULL)->get();
+        return Article::all();
     }
-
 }

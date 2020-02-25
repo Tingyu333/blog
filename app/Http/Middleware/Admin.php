@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Auth;
+use JWTAuth;
 
 class Admin
 {
@@ -16,11 +16,13 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user() == '') {
-            return redirect ('/login');
-        } elseif(Auth::user()->identity == 'admin') {
-            return $next($request);
+       if (JWTAuth::user()->identity != 'admin') {
+            return response()->json([
+                'success' => false,
+                'message' => '不是管理員',
+                'data' => '',
+            ], 404);
         }
-        return back();
+        return $next($request);
     }
 }
