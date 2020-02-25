@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Service\UserService;
 
 class UserController extends Controller
 {
@@ -16,7 +17,7 @@ class UserController extends Controller
     //admin查看使用者清單
     public function index()
     {
-        $data = $this->articleService->getAllUser();
+        $data = $this->userService->getAllUser();
         return response()->json([
             'success' => true,
             'message' => '會員名單',
