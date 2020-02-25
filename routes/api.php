@@ -47,7 +47,7 @@ Route::group(['prefix' => '/article'], function(){
 //admin
 Route::group(['prefix' => '/admin', 'middleware' => ['refresh.token', 'admin']], function(){
 	//admin查看使用者清單
-	Route::get('/index', 'ArticleController@index');
+	Route::get('/index', 'UserController@index');
 });
 
 
