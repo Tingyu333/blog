@@ -36,6 +36,13 @@ class ArticleController extends Controller
     public function user()
     {
         $data = $this->articleService->getUserArticle();
+        if ($data->isEmpty()) {
+            return response()->json([
+                'success' => true,
+                'message' => '沒有該user的文章',
+                'data' => $data,
+            ], 200);
+        }
         return response()->json([
             'success' => true,
             'message' => 'get user',
@@ -109,9 +116,16 @@ class ArticleController extends Controller
     public function index()
     {
         $data = $this->articleService->getAllArticle();
+        if (empty($data)) {
+            return response()->json([
+                'success' => true,
+                'message' => '沒有文章',
+                'data' => $data,
+            ], 200);
+        } 
         return response()->json([
             'success' => true,
-            'message' => 'get all article',
+            'message' => '文章列表',
             'data' => $data,
         ], 200);
     }

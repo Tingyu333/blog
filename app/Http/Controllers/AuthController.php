@@ -23,18 +23,18 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid Email or Password',
-                'data' => '',        
-            ], 401); 
-        }   
+                'data' => '',
+            ], 401);
+        }
         return response()->json([
             'success' => true,
             'message' => 'success',
             'data' => $token,
-        ], 200);  
+        ], 200);
     }
     //登出
     public function logout(Request $request)
-    {	
+    {
         try {
             JWTAuth::invalidate(JWTAuth::gettoken());
             return response()->json([
@@ -52,7 +52,7 @@ class AuthController extends Controller
     }
     //註冊
     public function register(Request $request)
-    { 
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:users|max:10',
             'email' =>'required|unique:users|email|max:255',
@@ -70,6 +70,6 @@ class AuthController extends Controller
             'success' => true,
             'message' => '註冊成功',
             'data' => '',
-        ], 200);  
+        ], 200);
     }
 }
