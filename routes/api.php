@@ -50,4 +50,10 @@ Route::group(['prefix' => '/admin', 'middleware' => ['refresh.token', 'admin']],
 	Route::get('/index', 'UserController@index');
 });
 
-
+Route::fallback(function() {
+    return response()->json([
+                'success' => false,
+                'message' => '找不到頁面',
+                'data' => '',
+            ], 404);
+});

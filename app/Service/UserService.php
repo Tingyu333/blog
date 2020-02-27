@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Repository\UserRepository;
 use JWTAuth;
 
-
 class UserService
 {
     protected $userRepository;
@@ -14,7 +13,6 @@ class UserService
     {
         $this->userRepository = $userRepository;
     }
-
 
     public function getAllUser()
     {

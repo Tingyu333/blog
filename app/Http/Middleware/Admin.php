@@ -21,7 +21,7 @@ class Admin
                 'success' => false,
                 'message' => '不是管理員',
                 'data' => '',
-            ], 404);
+            ], 403);
         }
         return $next($request);
     }

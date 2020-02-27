@@ -18,21 +18,22 @@ class AuthorityManagement
     public function handle($request, Closure $next)
     {
         //權限判斷
-        $articalId = $request->route('id');
-        $name = Article::where('id', $articalId)->value('name');
-        if (JWTAuth::user()->name == $name || JWTAuth::user()->identity == 'admin') {
-            return $next($request);
-        } elseif ($name == NULL) {
+        $articleId = $request->route('id');
+        $name = Article::where('id', $articleId)->value('name');
+        if ($name == NULL) {
             return response()->json([
                 'success' => false,
                 'message' => '找不到文章',
                 'data' => '',
-            ], 200);  
-        }   
+            ], 200);
+        } elseif (JWTAuth::user()->name == $name || JWTAuth::user()->identity == 'admin') {
+            return $next($request);
+        }
+
         return response()->json([
             'success' => false,
             'message' => '不是作者或管理員',
             'data' => '',
-        ], 403);         
+        ], 403);
     }
 }
