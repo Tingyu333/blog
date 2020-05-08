@@ -51,7 +51,7 @@ class ArticleController extends Controller
     }
     //新增文章功能
     public function store(Request $request)
-    {           
+    {
         $validator = Validator::make($request->all(), [
             'title' =>'required|max:25|regex:/(^[a-zA-Z0-9 ]*$)/',
             'content' => 'required|regex:/(^[,.&a-zA-Z0-9]*$)/',
@@ -68,7 +68,7 @@ class ArticleController extends Controller
             'success' => true,
             'message' => '新增成功',
             'data' => '',
-        ], 200); 
+        ], 200);
     }
     //編輯文章頁面顯示(取得該篇文章)
     public function edit($id)
@@ -78,7 +78,7 @@ class ArticleController extends Controller
             'success' => true,
             'message' => 'article edit',
             'data' => $data,
-        ], 200);         
+        ], 200);
     }
     //更新文章功能
     public function update(Request $request, $id)
@@ -94,13 +94,13 @@ class ArticleController extends Controller
                 'data' => '',
             ], 422);
         }
-        if ($this->articleService->updateArticle($request, $id) == 'true') {  
+        if ($this->articleService->updateArticle($request, $id) == 'true') {
             return response()->json([
                 'success' => true,
                 'message' => '更新成功',
                 'data' => '',
-            ], 200); 
-        } 
+            ], 200);
+        }
     }
     //刪除文章
     public function delete($id)
@@ -110,7 +110,7 @@ class ArticleController extends Controller
             'success' => true,
             'message' => '刪除成功',
             'data' => '',
-        ], 200); 
+        ], 200);
     }
     //主頁文章顯示
     public function index()
@@ -120,9 +120,9 @@ class ArticleController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => '沒有文章',
-                'data' => $data,
+                'data' => '',
             ], 200);
-        } 
+        }
         return response()->json([
             'success' => true,
             'message' => '文章列表',

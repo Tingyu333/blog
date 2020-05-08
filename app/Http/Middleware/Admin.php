@@ -16,7 +16,7 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-       if (JWTAuth::user()->identity != 'admin') {
+        if (JWTAuth::user()->identity != 'admin') {
             return response()->json([
                 'success' => false,
                 'message' => '不是管理員',

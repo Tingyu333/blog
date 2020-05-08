@@ -28,12 +28,12 @@ class AuthorityManagement
             ], 200);
         } elseif (JWTAuth::user()->name == $name || JWTAuth::user()->identity == 'admin') {
             return $next($request);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => '不是作者或管理員',
+                'data' => '',
+            ], 403);
         }
-
-        return response()->json([
-            'success' => false,
-            'message' => '不是作者或管理員',
-            'data' => '',
-        ], 403);
     }
 }

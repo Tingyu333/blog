@@ -33,7 +33,7 @@ Route::group(['prefix' => '/article'], function(){
 		Route::post('/store', 'ArticleController@store');
 		//僅能看到登入者自己的文章
 		Route::get('/user', 'ArticleController@user');
-	    
+
 	    Route::group(['middleware' => 'authority.management'], function () {
 	    	//編輯文章頁面資訊
 	    	Route::get('/edit/{id}', 'ArticleController@edit');
@@ -52,8 +52,8 @@ Route::group(['prefix' => '/admin', 'middleware' => ['refresh.token', 'admin']],
 
 Route::fallback(function() {
     return response()->json([
-                'success' => false,
-                'message' => '找不到頁面',
-                'data' => '',
-            ], 404);
+        'success' => false,
+        'message' => '找不到頁面',
+        'data' => '',
+    ], 404);
 });
